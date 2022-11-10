@@ -15,16 +15,19 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'flazz/vim-colorschemes'
 
 Plug 'jayli/vim-easycomplete'
+Plug 'tpope/vim-fugitive'
 
 call plug#end()
+
+let mapleader = ","
 
 " fzf
 set rtp+=/usr/local/opt/fzf
 
-" augroup vimrc_autocmds
-"   autocmd BufEnter * highlight OverLength ctermbg=darkgrey guibg=#111111
-"   autocmd BufEnter * match OverLength /\%78v.*/
-" augroup END
+augroup vimrc_autocmds
+  autocmd BufEnter *.go highlight OverLength ctermbg=darkgrey guibg=#111111
+  autocmd BufEnter *.go match OverLength /\%78v.*/
+augroup END
   
 set relativenumber
 set path+=**
@@ -96,10 +99,17 @@ autocmd FileType go nmap <leader>de :GoDebugStep<cr>
 autocmd FileType go nmap <leader>dn :GoDebugNext<cr>
 autocmd FileType go nmap <leader>db :GoDebugBreakpoint<cr>
 
+" Shortcuts for js files
+autocmd FileType js nmap <leader>c :EasyCompleteReference<cr>
 
-" Navigate errors with Ctrl-n and m
-map <C-n> :cnext<CR>
-map <C-m> :cprevious<CR>
+" Navigate location list with Ctrl-j and Ctrl-k
+map <C-j> :lnext<CR>
+map <C-k> :lprevious<CR>
+nnoremap <leader>l :lclose<CR>
+
+" Navigate errors with Meta-n and m
+map <M-j> :cnext<CR>
+map <M-k> :cprevious<CR>
 nnoremap <leader>a :cclose<CR>
 
 " ultisnips shortcuts
@@ -107,9 +117,6 @@ let g:UltiSnipsExpandTrigger="<c-e>"
 let g:UltiSnipsListSnippets="<c-l>"
 let g:UltiSnipsJumpForwardTrigger="<c-f>"
 let g:UltiSnipsJumpBackwardTrigger="<c-b>"
-
-let mapleader = ","
-
 
 " minimap
 " let g:minimap_auto_start = 1
