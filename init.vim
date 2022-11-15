@@ -17,6 +17,8 @@ Plug 'flazz/vim-colorschemes'
 Plug 'jayli/vim-easycomplete'
 Plug 'tpope/vim-fugitive'
 
+Plug 'preservim/nerdtree'
+
 call plug#end()
 
 let mapleader = ","
@@ -33,7 +35,7 @@ set relativenumber
 set path+=**
 set termguicolors
 set colorcolumn=80
-colorscheme solarized8_light_high
+colorscheme PerfectDark
 
 " Tabs = 4 spaces
 " set tabstop=4
@@ -62,6 +64,7 @@ endfunction
 
 " vim-go config
 let g:go_highlight_functions = 1
+let g:go_jump_to_error = 0
 let g:go_highlight_function_calls = 1
 let g:go_metalinter_autosave = 1
 let g:go_fmt_command = "goimports"
@@ -128,4 +131,16 @@ let g:minimap_enable_highlight_colorgroup = 1
 
 " vim-airline
 let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#buffer_nr_show = 1
 
+" NERDTree
+" If another buffer tries to replace NERDTree, put it in the other window, and bring back NERDTree.
+autocmd BufEnter * if bufname('#') =~ 'NERD_tree_\d\+' && bufname('%') !~ 'NERD_tree_\d\+' && winnr('$') > 1 |
+    \ let buf=bufnr() | buffer# | execute "normal! \<C-W>w" | execute 'buffer'.buf | endif
+
+" Start NERDTree. If a file is specified, move the cursor to its window.
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * NERDTree | if argc() > 0 || exists("s:std_in") | wincmd p | endif
+
+" Exit Vim if NERDTree is the only window remaining in the only tab.
+autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif
